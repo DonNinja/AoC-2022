@@ -17,7 +17,7 @@ namespace _1_1 {
                     results = CalculateHighest(numbers);
                     break;
                 case "2":
-                    CalculateThreeHighest(numbers);
+                    results = CalculateThreeHighest(numbers);
                     break;
                 default:
                     break;
@@ -47,13 +47,38 @@ namespace _1_1 {
         }
 
         static int CalculateThreeHighest(string[] numbers) {
-            int[] highestInts = { 0, 0, 0 };
+            int[] highestSums = new int[3];
+            int currTotal = 0;
 
             foreach (string num in numbers) {
+                if (num != "") {
+                    currTotal += int.Parse(num);
+                }
+                if (num == "" || num == numbers.Last()) {
+                    int lowestNumber = -1;
+                    int index = 0;
 
+                    for (int i = 0; i < highestSums.Length; i++) {
+                        if (lowestNumber == -1 || lowestNumber > highestSums[i]) {
+                            lowestNumber = highestSums[i];
+                            index = i;
+                        }
+                    }
+                    if (currTotal > lowestNumber) {
+                        highestSums[index] = currTotal;
+                    }
+
+                    currTotal = 0;
+                }
             }
 
-            return highestInts.Sum();
+            int returnSum = 0;
+
+            foreach (var num in highestSums) {
+                returnSum += num;
+            }
+
+            return returnSum;
         }
     }
 }
