@@ -22,32 +22,43 @@ namespace Day_2 {
         const int draw = 3;
         const int loss = 0;
 
+        static Dictionary<string, int> scoreMap = new Dictionary<string, int> {
+            { "X", 1 },
+            { "Y", 2 },
+            { "Z", 3 },
+        };
+
+        static Dictionary<string, string> keyLosesValueMap = new Dictionary<string, string> {
+            { "X", "B" },
+            { "Y", "C" },
+            { "Z", "A" },
+            { "A", "Y" },
+            { "B", "Z" },
+            { "C", "X" }
+        };
+
+        static Dictionary<string, string> keyWinsValueMap = new Dictionary<string, string> {
+            { "B", "X" },
+            { "C", "Y" },
+            { "A", "Z" },
+            { "Y", "A" },
+            { "Z", "B" },
+            { "X", "C" }
+        };
+
         static void Main(string[] args) {
             string filepath = args[0];
 
             string[] data = File.ReadAllLines(filepath);
 
-            Console.WriteLine($"The results came in and are: {CalculateOneGame(data)}");
+            //Console.WriteLine($"The results came in and are: {CalculateOneGame(data)}");
+            Console.WriteLine($"The results came in and are: {PredictResult(data)}");
 
             Console.WriteLine("(Press enter to quit)");
             Console.ReadLine();
         }
 
         static int CalculateOneGame(string[] data) {
-            Dictionary<string, string> keyLosesValueMap = new Dictionary<string, string> {
-                { "X", "B" },
-                { "Y", "C" },
-                { "Z", "A" },
-                { "A", "Y" },
-                { "B", "Z" },
-                { "C", "X" }
-            };
-
-            Dictionary<string, int> scoreMap = new Dictionary<string, int> {
-                { "X", 1 },
-                { "Y", 2 },
-                { "Z", 3 },
-            };
 
             int results = 0;
 
@@ -66,14 +77,38 @@ namespace Day_2 {
                 else {
                     results += draw;
                 }
-                //Console.WriteLine($"Opponent plays {plays[0]}, you play {plays[1]}, resulting in a {results - oldResult} point gain.");
             }
 
             return results;
         }
 
-        static int predictResult(string[] data) {
-            return 0;
+        static int PredictResult(string[] data) {
+            int results = 0;
+
+            Dictionary<string, int> matchScoreMap = new Dictionary<string, int> {
+                { "X", loss },
+                { "Y", draw },
+                { "Z", win }
+            };
+
+            foreach (string game in data) {
+                string[] plays = game.Split(' ');
+
+                Dictionary<string, string> choiceMap = new Dictionary<string, string> {
+                    { "X", keyWinsValueMap[plays[0]] },
+                    { "Y", plays[1] },
+                    { "Z", keyLosesValueMap[plays[0]] },
+                };
+
+                string choice = choiceMap[plays[1]];
+
+                Console.WriteLine($"The system chooses {choice}");
+
+                results += matchScoreMap[plays[1]];
+                results += scoreMap[choice];
+            }
+
+            return results;
         }
     }
 }
