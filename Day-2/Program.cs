@@ -25,7 +25,7 @@ namespace Day_2 {
         static Dictionary<string, int> scoreMap = new Dictionary<string, int> {
             { "X", 1 },
             { "Y", 2 },
-            { "Z", 3 },
+            { "Z", 3 }
         };
 
         static Dictionary<string, string> keyLosesValueMap = new Dictionary<string, string> {
@@ -44,6 +44,15 @@ namespace Day_2 {
             { "Y", "A" },
             { "Z", "B" },
             { "X", "C" }
+        };
+
+        static Dictionary<string, string> keyDrawsValueMap = new Dictionary<string, string> {
+            { "A", "X" },
+            { "B", "Y" },
+            { "C", "Z" },
+            { "X", "A" },
+            { "Y", "B" },
+            { "Z", "C" },
         };
 
         static void Main(string[] args) {
@@ -96,13 +105,13 @@ namespace Day_2 {
 
                 Dictionary<string, string> choiceMap = new Dictionary<string, string> {
                     { "X", keyWinsValueMap[plays[0]] },
-                    { "Y", plays[1] },
+                    { "Y", keyDrawsValueMap[plays[0]] },
                     { "Z", keyLosesValueMap[plays[0]] },
                 };
 
                 string choice = choiceMap[plays[1]];
 
-                Console.WriteLine($"The system chooses {choice}");
+                //Console.WriteLine($"The system chooses {choice} in response to {plays[0]}");
 
                 results += matchScoreMap[plays[1]];
                 results += scoreMap[choice];
