@@ -111,8 +111,6 @@ namespace Day_2 {
 
                 string choice = choiceMap[plays[1]];
 
-                //Console.WriteLine($"The system chooses {choice} in response to {plays[0]}");
-
                 results += matchScoreMap[plays[1]];
                 results += scoreMap[choice];
             }
