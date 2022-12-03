@@ -16,7 +16,7 @@ namespace Day_3 {
 
             string[] data = File.ReadAllLines(filepath);
 
-            Console.WriteLine($"The results came in and are: {Part1(data)}");
+            Console.WriteLine($"The results came in and are: {Part2(data)}");
 
             Console.WriteLine("(Press enter to quit)");
             Console.ReadLine();
@@ -47,7 +47,7 @@ namespace Day_3 {
                 HashSet<string> parts = new HashSet<string>();
 
                 foreach (char letter in compartments[0].ToCharArray()) {
-                    if (parts.TryGetValue(letter.ToString(), out var outLetter)) continue;
+                    if (parts.TryGetValue(letter.ToString(), out var _)) continue;
 
                     foreach (char secondLetter in compartments[1]) {
                         if (secondLetter == letter) {
@@ -66,22 +66,40 @@ namespace Day_3 {
         static int Part2(string[] data) {
             int results = 0;
 
-            //for (int i = 0; i < data.Length; i += 3) {
-            //    if (data.Length - i - 3 < 0) break;
+            for (int i = 0; i < data.Length; i += 3) {
+                if (data.Length - i - 3 < 0) break;
 
-            //    string[] bags = new string[3] {
-            //        data[i],
-            //        data[i + 1],
-            //        data[i + 2]
-            //    };
+                string[] bags = new string[3] {
+                    data[i],
+                    data[i + 1],
+                    data[i + 2]
+                };
 
-            //    foreach (char letter in bags[0]) {
-            //        HashSet<string> 
-
-            //    }
-            //}
+                results += GetBadgeType(bags);
+            }
 
             return results;
+        }
+
+        static int GetBadgeType(string[] bags) {
+            HashSet<string> occurredInFirst = new HashSet<string>();
+            foreach (char letter in bags[0]) {
+                occurredInFirst.Add(letter.ToString());
+            }
+
+            foreach (char letter in bags[1]) {
+                if (occurredInFirst.TryGetValue(letter.ToString(), out string _)) {
+                    foreach (char latterLetter in bags[2]) {
+                        if (occurredInFirst.TryGetValue(letter.ToString(), out string _)) {
+                            if (letter == latterLetter) {
+                                return GetLetterValue(letter);
+                            }
+                        }
+                    }
+                }
+            }
+
+            return 0;
         }
     }
 }
