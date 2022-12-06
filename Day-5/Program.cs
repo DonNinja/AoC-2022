@@ -131,12 +131,17 @@ namespace Day_5 {
             Move(stackFrom, stackTo, amount);
         }
 
+        /// <summary>
+        /// Moves crates "together", it essentially just uses a buffer stack to emulate the moving together functionality
+        /// </summary>
+        /// <param name="line"></param>
         static void MoveTogether(string line) {
             int amount = GetNextNumber(ref line);
 
             int stackIndex = GetNextNumber(ref line);
             NewStack stackFrom = stacks[stackIndex - 1];
 
+            // Use buffer stack to keep crates in the same order
             NewStack bufferStack = new NewStack();
 
             stackIndex = GetNextNumber(ref line);
@@ -146,8 +151,14 @@ namespace Day_5 {
             Move(bufferStack, stackTo, amount);
         }
 
+        /// <summary>
+        /// Moves crates from on stack onto another
+        /// </summary>
+        /// <param name="stackFrom">Stack to move the crate from</param>
+        /// <param name="stackTo">Stack to move the crate to</param>
+        /// <param name="amount">Amount of crates to move</param>
         static void Move(NewStack stackFrom, NewStack stackTo, int amount) {
-            if (stackFrom != null) {
+            if (stackFrom != null && stackTo != null) {
                 for (int i = 0; i < amount; i++) {
                     char move = stackFrom.Pop();
                     stackTo.Push(move);
@@ -155,6 +166,11 @@ namespace Day_5 {
             }
         }
 
+        /// <summary>
+        /// Gets the next number
+        /// </summary>
+        /// <param name="line">The current line in the file</param>
+        /// <returns>The next number in the line</returns>
         static int GetNextNumber(ref string line) {
             Regex isDigit = new Regex(@"[0-9]");
             IEnumerable<char> charList = line.SkipWhile(x => !char.IsDigit(x));
